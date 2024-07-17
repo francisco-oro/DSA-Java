@@ -1,5 +1,11 @@
 package list;
 
+import com.sun.source.tree.BinaryTree;
+import org.w3c.dom.NamedNodeMap;
+
+import javax.xml.crypto.NodeSetData;
+import java.lang.module.FindException;
+
 public class SinglyLinkedList {
     private Node head;
     private static class Node {
@@ -14,6 +20,15 @@ public class SinglyLinkedList {
     
     public void display() { 
         Node current = head;
+        while (current != null) {
+            System.out.print(current.data + "->");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+
+    public void display(Node headNode) {
+        Node current = headNode;
         while (current != null) {
             System.out.print(current.data + "->");
             current = current.next;
@@ -102,6 +117,7 @@ public class SinglyLinkedList {
     }
     
     public void deleteAtIndex(int index) {
+//        position is valid and starting from 1
         if (index == 1) {
             head = head.next;     
         } else {
@@ -113,6 +129,69 @@ public class SinglyLinkedList {
             }
             Node current = previous.next;
             previous.next = current.next;
+        }
+    }
+    
+    public boolean exists(int searchKey) {
+        Node current = head;
+        while (current != null) {
+            if(current.data == searchKey) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+    
+    public Node reverse() { 
+        Node current = head;
+        Node previous = null;
+        Node next = null;
+        while (current != null) {
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+        
+        head = previous;
+        return head;
+    }
+    
+    public Node findFromEnd(int n) { 
+        if (head == null) {
+            return null;
+        }
+        
+        if (n <= 0) {
+            throw new IllegalArgumentException("Invalid value: n = " + n);
+        }
+        
+        Node main = head;
+        Node ref = head;
+        int count = 0;
+        while(count < n) {
+            if (ref == null) {
+                throw new IllegalArgumentException(n + " is greater than the number of elements in list");
+            }
+            ref = ref.next;
+            count++;
+        }
+        while(ref != null) {
+            ref = ref.next;
+            main = main.next;
+        }
+        return main;
+    }
+    
+    public void removeDuplicatesFromSorted() { 
+        Node current = head;
+        while (current != null && current.next != null) {
+            if (current.data == current.next.data) {
+                current.next = current.next.next;
+            } else {
+                current = current.next;
+            }
         }
     }
     
@@ -138,6 +217,20 @@ public class SinglyLinkedList {
         
         list.deleteFirst();
         list.deleteLast();
+        list.display();
+        
+        list.deleteAtIndex(3);
+        list.display();
+        
+        System.out.println(list.exists(3));
+        System.out.println(list.exists(2));
+        
+        list.reverse();
+        list.display();
+        
+        System.out.println(list.findFromEnd(2).data);
+        
+        list.removeDuplicatesFromSorted();
         list.display();
     }
 }
