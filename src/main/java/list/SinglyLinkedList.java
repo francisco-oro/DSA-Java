@@ -1,5 +1,7 @@
 package list;
 
+import array.RemoveEvenInteger;
+
 public class SinglyLinkedList {
     private Node head;
     private static class Node {
@@ -214,6 +216,8 @@ public class SinglyLinkedList {
         temp.next = current.next;
     }
     
+    
+    /*Floyd's Cycle detection algorithm*/
     public boolean hasLoop(){ 
         Node fastPtr = head;
         Node slowPtr = head;
@@ -247,6 +251,43 @@ public class SinglyLinkedList {
             node = node.next;
         }
         return temp; // Starting node of the loop
+    }
+    
+    public void removeLoop() { 
+        Node slowPtr = head;
+        Node fastPtr = head;
+        while (fastPtr != null && fastPtr.next != null) {
+            fastPtr = fastPtr.next.next;
+            slowPtr = slowPtr.next;
+            if (fastPtr == slowPtr) {
+                removeLoop(slowPtr);
+                return;
+            }
+        }
+    }
+    
+    private void removeLoop(Node slowPtr) {
+        Node temp = head;
+        while (slowPtr.next != temp.next) {
+            temp = temp.next;
+            slowPtr = slowPtr.next;
+        }
+        slowPtr.next = null;
+    }
+    
+    public void createALoop() { 
+        Node first = new Node(1);
+        Node second = new Node(2);
+        Node third = new Node(3);
+        Node fourth = new Node(4);
+        Node fifth = new Node(5);
+        
+        head = first; 
+        first.next = second;
+        second.next = third;
+        third.next = fourth;
+        fourth.next = fifth;
+        fifth.next = third;
     }
     
     public static void main(String[] args) {
@@ -294,8 +335,11 @@ public class SinglyLinkedList {
         list.removeKey(2);
         list.display();
         
-        list.findFromEnd(1).next = second;
+        list.createALoop();
         System.out.println(list.hasLoop());
         System.out.println(list.findStartOfLoop().data);
+        
+        list.removeLoop();
+        list.display();
     }
 }
