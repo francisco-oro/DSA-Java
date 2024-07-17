@@ -1,6 +1,9 @@
 package list;
 
 
+import javax.swing.*;
+import java.util.NoSuchElementException;
+
 public class CircularSinglyLinkedList {
     private Node last;
     private int length;
@@ -42,6 +45,7 @@ public class CircularSinglyLinkedList {
         sixth.next = first;
         
         last = sixth;   
+        length = 6;
     }
     
     public void insertFirst(int data) {
@@ -66,6 +70,40 @@ public class CircularSinglyLinkedList {
         length++;
     }
     
+    public Node removeFirst() { 
+        if(isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Node temp = last.next;
+        if(last.next == last) {
+            last = null;
+        } else {
+            last.next = temp.next;
+        }
+        temp.next = null;
+        length--;
+        return temp;
+    }
+    
+    public void removeLast() { 
+        if(isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Node temp = last.next;
+        if(last.next == last) {
+            last = null;
+            length--;
+            return;
+        }
+        while(temp.next != last) {
+            temp = temp.next; 
+        }
+        temp.next = last.next;
+        last.next = null;
+        last = temp;
+        length--;
+    }
+    
     public void traverse () { 
         if (last == null) {
             return;
@@ -86,6 +124,14 @@ public class CircularSinglyLinkedList {
         
         list.insertFirst(3);
         list.insertEnd(4);
+        list.traverse();
+        
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.traverse(); 
+        
+        list.removeLast();
         list.traverse();
     }
 }
