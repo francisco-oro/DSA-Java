@@ -58,5 +58,7 @@ public class Stack {
         System.out.println(stack.peek());
         stack.pop();
         System.out.println(stack.peek());
+        stack.pop();
+        System.out.println(stack.peek());
     }
 }
