@@ -1,11 +1,5 @@
 package list;
 
-import com.sun.source.tree.BinaryTree;
-import org.w3c.dom.NamedNodeMap;
-
-import javax.xml.crypto.NodeSetData;
-import java.lang.module.FindException;
-
 public class SinglyLinkedList {
     private Node head;
     private static class Node {
@@ -195,6 +189,66 @@ public class SinglyLinkedList {
         }
     }
     
+    public Node insertInSortedList(Node newNode) { 
+        Node current = head;
+        Node temp = null;
+        while(current != null && current.data < newNode.data) {
+            temp = current;
+            current = current.next;
+        }
+        newNode.next = current;
+        temp.next = newNode;
+        return head;
+    }
+    
+    public void removeKey(int key) { 
+        Node current = head;
+        Node temp = null;
+        while(current != null && current.data != key) {
+            temp = current;
+            current = current.next;
+        }
+        if (current == null) {
+            return;
+        }
+        temp.next = current.next;
+    }
+    
+    public boolean hasLoop(){ 
+        Node fastPtr = head;
+        Node slowPtr = head;
+        while (fastPtr != null && fastPtr.next != null) {
+            fastPtr = fastPtr.next.next;
+            slowPtr = slowPtr.next;
+            if (fastPtr == slowPtr) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Node findStartOfLoop() { 
+        Node fastPtr = head;
+        Node slowPtr = head;
+        while (fastPtr != null && fastPtr.next != null) {
+            fastPtr = fastPtr.next.next;
+            slowPtr = slowPtr.next;
+            if (fastPtr == slowPtr) {
+                return getStartingNode(slowPtr);
+            }
+        }
+        return null;
+    }
+    
+    public Node getStartingNode(Node node) {
+        Node temp = head;
+        while(node != temp) {
+            temp = temp.next;
+            node = node.next;
+        }
+        return temp; // Starting node of the loop
+    }
+    
     public static void main(String[] args) {
         SinglyLinkedList list = new SinglyLinkedList();
         list.head = new Node(1);
@@ -232,5 +286,16 @@ public class SinglyLinkedList {
         
         list.removeDuplicatesFromSorted();
         list.display();
+        
+        list.reverse();
+        list.insertInSortedList(new Node(3));
+        list.display();
+        
+        list.removeKey(2);
+        list.display();
+        
+        list.findFromEnd(1).next = second;
+        System.out.println(list.hasLoop());
+        System.out.println(list.findStartOfLoop().data);
     }
 }
