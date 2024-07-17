@@ -1,7 +1,5 @@
 package list;
 
-import array.RemoveEvenInteger;
-
 public class SinglyLinkedList {
     private Node head;
     private static class Node {
@@ -52,7 +50,7 @@ public class SinglyLinkedList {
         head = newNode;
     }
     
-    public void insertAtEnd(int data) {
+    public void insertLast(int data) {
         Node newNode = new Node(data);
         if (head == null) {
             head = newNode;
@@ -275,6 +273,26 @@ public class SinglyLinkedList {
         slowPtr.next = null;
     }
     
+    public static Node merge(Node a, Node b) { 
+        Node dummy = new Node(0);
+        Node tail = dummy;
+        while (a != null && b != null) {
+            if (a.data <= b.data) {
+                tail.next = a;
+                a = a.next;
+            } else {
+                tail.next = b;
+                b = b.next; 
+            }
+            tail = tail.next;
+        } if (a == null) {
+            tail.next = b;
+        } else {
+            tail.next = a;
+        }
+        return dummy.next;
+    }
+    
     public void createALoop() { 
         Node first = new Node(1);
         Node second = new Node(2);
@@ -290,56 +308,28 @@ public class SinglyLinkedList {
         fifth.next = third;
     }
     
+    
+    
     public static void main(String[] args) {
         SinglyLinkedList list = new SinglyLinkedList();
-        list.head = new Node(1);
-        Node second = new Node(2);
-        Node third = new Node(3);
-        Node fourth = new Node(4);
+        list.insertLast(1);
+        list.insertLast(4);
+        list.insertLast(8);
         
-//        Now we will connect them together to form a chain
-        list.head.next = second;
-        second.next = third;
-        third.next = fourth;
+        SinglyLinkedList list2 = new SinglyLinkedList();
+        list2.insertLast(3);
+        list2.insertLast(5);
+        list2.insertLast(8);
+        list2.insertLast(9);
+        list2.insertLast(14);
+        list2.insertLast(18);
         
         list.display();
-        System.out.println(list.count());
-        list.insertAtBeginning(5);
-        list.insertAtEnd(0);
-        list.display(); 
-        list.insertAt(2, 5);
-        list.display();
+        list2.display();
         
-        list.deleteFirst();
-        list.deleteLast();
-        list.display();
+        SinglyLinkedList result = new SinglyLinkedList();
+        result.head = merge(list.head, list2.head);
         
-        list.deleteAtIndex(3);
-        list.display();
-        
-        System.out.println(list.exists(3));
-        System.out.println(list.exists(2));
-        
-        list.reverse();
-        list.display();
-        
-        System.out.println(list.findFromEnd(2).data);
-        
-        list.removeDuplicatesFromSorted();
-        list.display();
-        
-        list.reverse();
-        list.insertInSortedList(new Node(3));
-        list.display();
-        
-        list.removeKey(2);
-        list.display();
-        
-        list.createALoop();
-        System.out.println(list.hasLoop());
-        System.out.println(list.findStartOfLoop().data);
-        
-        list.removeLoop();
-        list.display();
+        result.display();
     }
 }

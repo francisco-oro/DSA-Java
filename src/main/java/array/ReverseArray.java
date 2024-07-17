@@ -2,7 +2,7 @@ package array;
 
 public class ReverseArray {
     public static void main(String[] args) {
-        int arr[] = {3, 2, 4, 7, 10, 6, 7};
+        int[] arr = {3, 2, 4, 7, 10, 6, 7};
         printArray(arr);
         reverseArray(arr, 0, arr.length - 1);
         printArray(arr);
