@@ -2,6 +2,8 @@ package binaryTree;
 
 import com.sun.source.tree.Tree;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BinaryTree {
@@ -73,6 +75,53 @@ public class BinaryTree {
         }
     }
     
+    public void postOrder(TreeNode root) {
+        if(root == null) return;
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.print(root.data + " ");
+    }
+    
+    public void postOrderWithLoop(TreeNode root) {
+        if(root == null) return;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        while(curr != null || !stack.isEmpty()) {
+            if(curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            } else {
+                TreeNode temp = stack.peek().right; 
+                if(temp == null) { 
+                    temp = stack.pop();
+                    System.out.print(temp.data + " ");
+                    while(!stack.isEmpty() && temp == stack.peek().right) {
+                        temp = stack.pop();
+                        System.out.print(temp.data + " ");
+                    }
+                } else {
+                    curr = temp;
+                }
+            }
+        }
+    }
+    
+    public void levelOrder(TreeNode root) {
+        if(root == null) return;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.data + " ");
+            if(node.left != null) queue.offer(node.left);
+            if(node.right != null) queue.offer(node.right);
+        }
+    }
+    
+    public int findMax(TreeNode root) {
+        if(root == null) return Integer.MIN_VALUE;
+    }
+    
     public static void main(String[] args) {
         BinaryTree binaryTree = new BinaryTree();
         binaryTree.createBinaryTree();
@@ -83,5 +132,13 @@ public class BinaryTree {
         binaryTree.inOrder(binaryTree.root);
         System.out.println();
         binaryTree.inOrderWithLoop(binaryTree.root);
+        
+        System.out.println();
+        binaryTree.postOrder(binaryTree.root);
+        System.out.println();
+        binaryTree.postOrderWithLoop(binaryTree.root);
+        
+        System.out.println();
+        binaryTree.levelOrder(binaryTree.root);
     }
 }
