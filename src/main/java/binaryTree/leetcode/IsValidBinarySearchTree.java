@@ -18,10 +18,9 @@ public class IsValidBinarySearchTree {
             return false;
         }
         boolean left = isValidBST(root.left, min, root.data);
-        if(left) { 
-            boolean right = isValidBST(root.right, root.data, max);
-            return right;
+        if(left) {
+            return isValidBST(root.right, root.data, max);
         }
-        return false;
+        return false;   
     }
 }
